@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-outfit);
+  --font-handwriting: var(--font-caveat);
+  --font-playful: var(--font-fredoka);
+
+  --color-background: hsl(45 30% 96%);
+  --color-foreground: hsl(20 20% 20%);
+  --color-primary: hsl(350 70% 60%);
+  --color-secondary: hsl(40 50% 90%);
+  --color-muted: hsl(45 10% 80%);
+  --color-accent: hsl(15 80% 60%);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), sans-serif;
+    background-color: #f0ebe3;
+    overflow-x: hidden;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  * {
+    box-sizing: border-box;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+
+  .bg-craft {
+    background-color: #d2b48c;
+    background-image: url("https://www.transparenttextures.com/patterns/cardboard-flat.png");
+  }
+
+  .oil-paint-texture {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .oil-paint-texture::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("/images/canvas-texture.png");
+    background-size: 200px;
+    opacity: 0.12;
+    mix-blend-mode: multiply;
+  }
+
+  .album-spine {
+    background: linear-gradient(to right,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.1) 10%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(0, 0, 0, 0.1) 90%,
+        rgba(0, 0, 0, 0.3) 100%);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .page-fold-shadow {
+    background: linear-gradient(to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 60%,
+        rgba(255, 255, 255, 0.4) 85%,
+        rgba(0, 0, 0, 0.1) 92%,
+        rgba(0, 0, 0, 0.4) 100%);
+    filter: blur(0.5px);
+  }
+
+  .page-fold-shadow-reverse {
+    background: linear-gradient(to left,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 60%,
+        rgba(255, 255, 255, 0.4) 85%,
+        rgba(0, 0, 0, 0.1) 92%,
+        rgba(0, 0, 0, 0.4) 100%);
+    filter: blur(0.5px);
+  }
+
+  .page-stack-effect {
+    box-shadow:
+      1px 0 0 rgba(0, 0, 0, 0.1),
+      2px 0 0 rgba(0, 0, 0, 0.05),
+      3px 0 0 rgba(0, 0, 0, 0.02);
+  }
+
+  .page-stack-effect-reverse {
+    box-shadow:
+      -1px 0 0 rgba(0, 0, 0, 0.1),
+      -2px 0 0 rgba(0, 0, 0, 0.05),
+      -3px 0 0 rgba(0, 0, 0, 0.02);
+  }
+
+  .paper-shadow {
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.2),
+      0 10px 20px rgba(0, 0, 0, 0.15),
+      0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .rough-edge {
+    clip-path: polygon(0% 0%, 5% 0.5%, 10% 0%, 15% 1%, 20% 0%, 25% 0.5%, 30% 0%, 35% 1%, 40% 0%, 45% 0.5%, 50% 0%, 55% 1%, 60% 0%, 65% 0.5%, 70% 0%, 75% 1%, 80% 0%, 85% 0.5%, 90% 0%, 95% 1%, 100% 0%,
+        100% 100%, 95% 99.5%, 90% 100%, 85% 99%, 80% 100%, 75% 99.5%, 70% 100%, 65% 99%, 60% 100%, 55% 99.5%, 50% 100%, 45% 99%, 40% 100%, 35% 99.5%, 30% 100%, 25% 99%, 20% 100%, 15% 99.5%, 10% 100%, 5% 99%, 0% 100%);
+  }
+
+  .tape-effect {
+    @apply bg-white/30 backdrop-blur-[1px] border-x border-white/20;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .handwritten {
+    font-family: var(--font-handwriting), cursive;
+  }
+
+  .playful {
+    font-family: var(--font-playful), sans-serif;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0ebe3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d2b48c;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c1a37a;
 }
