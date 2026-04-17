@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Heart, Lock, Pause, Play, Volume2, VolumeX, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, Loader2, Lock, Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import Page from './Page';
@@ -26,7 +26,7 @@ const MyBook: React.FC = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  
+
   // New States
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -152,7 +152,7 @@ const MyBook: React.FC = () => {
             <div className={`p-4 rounded-full bg-primary/20 transition-all duration-300 ${passwordError ? 'bg-red-500/20' : ''}`}>
               <Lock className={`w-8 h-8 ${passwordError ? 'text-red-400' : 'text-primary'}`} />
             </div>
-            
+
             <div className="space-y-2">
               <h2 className="text-3xl font-bold handwritten text-white">Unlock Our Memories</h2>
               <p className="text-white/60 text-sm playful tracking-wider">Enter our secret password to begin</p>
@@ -193,21 +193,21 @@ const MyBook: React.FC = () => {
         <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
         <div className="relative z-10 flex flex-col items-center space-y-8 max-w-xs w-full text-center">
           <div className="relative">
-             <Loader2 className="w-16 h-16 text-primary animate-spin" />
-             <div className="absolute inset-0 flex items-center justify-center">
-                <Heart className="w-6 h-6 text-primary fill-primary animate-pulse" />
-             </div>
+            <Loader2 className="w-16 h-16 text-primary animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Heart className="w-6 h-6 text-primary fill-primary animate-pulse" />
+            </div>
           </div>
 
           <div className="space-y-3 w-full">
             <p className="text-white/80 font-bold playful tracking-widest text-lg uppercase">
-               Preparing Our Memories...
+              Preparing Our Memories...
             </p>
             <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-               <div 
-                 className="h-full bg-primary transition-all duration-300 ease-out" 
-                 style={{ width: `${loadingProgress}%` }}
-               />
+              <div
+                className="h-full bg-primary transition-all duration-300 ease-out"
+                style={{ width: `${loadingProgress}%` }}
+              />
             </div>
             <p className="text-white/40 text-[10px] tracking-widest font-bold uppercase">
               {loadingProgress}% Complete
