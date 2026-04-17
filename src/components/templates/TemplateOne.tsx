@@ -18,6 +18,7 @@ const TemplateOne: React.FC<TemplateOneProps> = ({ title, imageSrc }) => {
         width={500}
         height={500}
         alt={title}
+        priority
         className="object-cover w-full h-full grayscale-20 hover:grayscale-0 transition-all duration-700"
       />
     </div>

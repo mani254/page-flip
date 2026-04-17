@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Heart, Pause, Play, Volume2, VolumeX } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, Lock, Pause, Play, Volume2, VolumeX, Loader2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import Page from './Page';
@@ -26,6 +26,29 @@ const MyBook: React.FC = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  
+  // New States
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [isPreloading, setIsPreloading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  const bookImages = [
+    '/oil_painting_cover_1776345279108.png',
+    '/images/page-1.jpeg',
+    '/images/page-2.jpeg',
+    '/images/page-3-0.jpeg',
+    '/images/page-3.jpeg',
+    '/images/page-4.jpeg',
+    '/images/page-5.jpeg',
+    '/images/page-6.jpeg',
+    '/images/page-7.jpeg',
+    '/images/page-8.jpeg',
+    '/images/raika_heart_bg.png',
+    '/images/marriage_rose.png',
+    '/images/frame-background.jpeg'
+  ];
 
 
   const toggleMusic = () => {
@@ -63,6 +86,41 @@ const MyBook: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Image Preloading Logic
+  useEffect(() => {
+    let loadedCount = 0;
+    const totalImages = bookImages.length;
+
+    bookImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedCount++;
+        setLoadingProgress(Math.floor((loadedCount / totalImages) * 100));
+        if (loadedCount === totalImages) {
+          setTimeout(() => setIsPreloading(false), 800); // Smooth transition
+        }
+      };
+      img.onerror = () => {
+        loadedCount++; // Count even if failed to prevent stuck loading
+        setLoadingProgress(Math.floor((loadedCount / totalImages) * 100));
+        if (loadedCount === totalImages) {
+          setTimeout(() => setIsPreloading(false), 800);
+        }
+      };
+    });
+  }, []);
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === "our-love-story") {
+      setIsAuthenticated(true);
+    } else {
+      setPasswordError(true);
+      setTimeout(() => setPasswordError(false), 2000);
+    }
+  };
+
   useEffect(() => {
     if (audioMusicRef.current) {
       audioMusicRef.current.muted = isMuted;
@@ -83,6 +141,82 @@ const MyBook: React.FC = () => {
   }, [isPlaying]);
 
   if (dimensions.width === 0) return null;
+
+  // 1. Password Protection Gate
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+        <div className="relative z-10 w-full max-w-md p-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl">
+          <div className="flex flex-col items-center text-center space-y-6">
+            <div className={`p-4 rounded-full bg-primary/20 transition-all duration-300 ${passwordError ? 'bg-red-500/20' : ''}`}>
+              <Lock className={`w-8 h-8 ${passwordError ? 'text-red-400' : 'text-primary'}`} />
+            </div>
+            
+            <div className="space-y-2">
+              <h2 className="text-3xl font-bold handwritten text-white">Unlock Our Memories</h2>
+              <p className="text-white/60 text-sm playful tracking-wider">Enter our secret password to begin</p>
+            </div>
+
+            <form onSubmit={handlePasswordSubmit} className="w-full space-y-4">
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password..."
+                className={`w-full px-6 py-4 bg-white/5 border rounded-xl text-white text-center focus:outline-none focus:ring-2 transition-all placeholder:text-white/20 font-sans tracking-widest ${passwordError ? 'border-red-500 focus:ring-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'border-white/20 focus:ring-primary/50'}`}
+                autoFocus
+              />
+              <button
+                type="submit"
+                className="w-full py-4 bg-primary hover:bg-primary/80 text-white rounded-xl font-bold playful transition-all active:scale-95 shadow-lg shadow-primary/20"
+              >
+                Open Book
+              </button>
+            </form>
+
+            <div className="flex items-center gap-2 text-white/30 text-[10px] uppercase tracking-[0.3em]">
+              <Heart className="w-3 h-3 fill-white/10" />
+              <span>For Our Eyes Only</span>
+              <Heart className="w-3 h-3 fill-white/10" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Loading Overlay
+  if (isPreloading) {
+    return (
+      <div className="fixed inset-0 z-[90] flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+        <div className="relative z-10 flex flex-col items-center space-y-8 max-w-xs w-full text-center">
+          <div className="relative">
+             <Loader2 className="w-16 h-16 text-primary animate-spin" />
+             <div className="absolute inset-0 flex items-center justify-center">
+                <Heart className="w-6 h-6 text-primary fill-primary animate-pulse" />
+             </div>
+          </div>
+
+          <div className="space-y-3 w-full">
+            <p className="text-white/80 font-bold playful tracking-widest text-lg uppercase">
+               Preparing Our Memories...
+            </p>
+            <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+               <div 
+                 className="h-full bg-primary transition-all duration-300 ease-out" 
+                 style={{ width: `${loadingProgress}%` }}
+               />
+            </div>
+            <p className="text-white/40 text-[10px] tracking-widest font-bold uppercase">
+              {loadingProgress}% Complete
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 w-full h-screen mx-auto overflow-hidden">
