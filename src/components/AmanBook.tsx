@@ -253,7 +253,7 @@ const AmanBook: React.FC = () => {
             <div className="relative z-10 p-8 flex flex-col items-center justify-center h-full w-full">
               <div className="border-4 border-double border-yellow-600/40 p-12 flex flex-col items-center justify-center bg-black/30 backdrop-blur-[2px]">
                 <h1 className="text-7xl handwritten text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] mb-6">
-                  Happy Birthday Aman
+                  Happy Birthday Ammaan
                 </h1>
                 <div className="w-32 h-1 bg-yellow-600/50 mb-8" />
                 <p className="playful text-white/90 text-2xl italic tracking-[0.2em] uppercase drop-shadow-md">
