@@ -257,7 +257,7 @@ const AmanBook: React.FC = () => {
                 </h1>
                 <div className="w-32 h-1 bg-yellow-600/50 mb-8" />
                 <p className="playful text-white/90 text-2xl italic tracking-[0.2em] uppercase drop-shadow-md">
-                  Memories Of You
+                  Memories Of Us
                 </p>
               </div>
             </div>
